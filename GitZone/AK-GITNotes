@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------------------------------------------
-
 June 27, 2019
+------------------------------------------------------------------------------------------------------------------
 
 working tree - (git add, git clean -fd .) - stagging/indexing area - (git commit) - local repo - (push/pull) - remote repo -  - stash
 
@@ -16,8 +16,8 @@ git status
 git log --decorate --oneline --graph
 
 ------------------------------------------------------------------------------------------------------------------
-
 June 29, 2019
+------------------------------------------------------------------------------------------------------------------
 
 ** git-clean - Remove untracked files from the working tree
 ** if you want to remove all the files which is not commited to repository use: / untracked files from git..
@@ -48,8 +48,8 @@ Username for 'https://github.com': sivaprasad.kammara@gmail.com
 Password for 'https://sivaprasad.kammara@gmail.com@github.com':
 
 ------------------------------------------------------------------------------------------------------------------
-
 July 07, 2019
+------------------------------------------------------------------------------------------------------------------
 
 git remote add origin https://github.com/ksphub/KSPDocs.git
 create file push...
@@ -69,8 +69,8 @@ git remote add just creates an entry in your git config that specifies a name fo
 git clone creates a new git repository by copying an existing one located at the URI you specify.
 
 ------------------------------------------------------------------------------------------------------------------
-
 July 11, 2019
+------------------------------------------------------------------------------------------------------------------
 
 Jenkins and Git overview
 
@@ -80,9 +80,9 @@ https://www.atlassian.com/git/tutorials/using-branches
 
 /root/soft/gittest/gitbranch
 
-
-Aut 07, 2019
-------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------
+Aug 07, 2019
+------------------------------------------------------------------------------------------------------------------
 
 touch f1 f2; git add f1 f2 
 git commit -m "3rd commit" f2
@@ -96,6 +96,7 @@ git log --author=authorname
 git log --since=yy-mm-dd
 git log --until=yy-mm-dd
 git log --oneline --decorate ; useful in multiple branches
+git log --stat --summary
 
 git reset --soft lastcommitid-1 (copy file from local repo to staging/index area)
 git reset HEAD filename (unstage)
@@ -105,4 +106,475 @@ commited files:
  (use "git add/rm <file>..." to update what will be committed)
  (use "git checkout -- <file>..." to discard changes in working directory)
 
+
 ------------------------------------------------------------------------------------------------------------------
+Aug 08, 2019
+------------------------------------------------------------------------------------------------------------------
+
+list branch:
+git branch 
+
+create branch:
+git branch develop
+
+switch to branch:
+git checkout develop
+
+create and switch:
+git checkout -b develop2
+
+------------------------------------------------------------------------------------------------------------------
+Aug 10, 2019
+------------------------------------------------------------------------------------------------------------------
+
+rename branch:
+git branch -m  develop develop2
+
+replace branch:
+git branch -M test develop2
+
+git log --decorate --oneline --graph
+------------------------------------------------------------------------------------------------------------------
+Aug 11, 2019
+------------------------------------------------------------------------------------------------------------------
+
+delete branch:
+git branch -d hotfixes
+git branch -D hotfixes
+
+set command alias:
+git config --global alias.lo "log --oneline"
+git config --global alias.lod "log --oneline --decorate"
+git config --list | grep -i alias
+git config --global --unset alias.lo
+
+for i in  file3 ; do touch $i ; git add . ; git commit -m "added $i"; done
+
+------------------------------------------------------------------------------------------------------------------
+Aug 12, 2019
+------------------------------------------------------------------------------------------------------------------
+
+to merge develop to master (fast-farward - without conflicts;  developers commits on branch and no commits on master ):
+git checkout master
+git merge develop
+
+to merge develop to master (with conflicts - 2 developers update's same file; Automatic merge failed (Merge made by the 'recursive' strategy.)
+; fix conflicts and then commit the result. ):
+git checkout master
+git merge develop
+
+to merge develop to master (with out conflicts - 2 developers update's updates different file ; you will get extra commit. ):
+git checkout master
+git merge develop
+
+echo masterhi >> file4 ; git add . ; git commit -m "added edited by master"
+
+[root@ip-172-31-46-219 user8]# git merge dev1
+Auto-merging file4
+CONFLICT (content): Merge conflict in file4
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+create tag... realease point...
+git tag 0.1
+git tag --list / git tag
+git tag -d list
+git push https://github.com/ksphub/testrepo2.git 0.1
+git push https://github.com/ksphub/testrepo2.git --tags
+
+edit and commit one shot for tracked files:
+echo master >> mfile ; git commit -am "updated by master"
+
+to edit comment:
+git commit --amend -m "updated comments"
+
+------------------------------------------------------------------------------------------------------------------
+practice: https://nvie.com/posts/a-successful-git-branching-model/
+------------------------------------------------------------------------------------------------------------------
+
+mkdir gmodel2 ; cd gmodel2
+
+git status; git init ; git status
+git branch ; git log
+touch masterfile ; git add masterfile ; git commit -m "added by master"
+git tag; git tag 0.1; git tag
+
+git checkout -b develop
+touch dfile1 ; git add dfile1 ; git commit -m "added by develop"
+touch dfile2 ; git add dfile2 ; git commit -m "added by develop"
+git branch feabranch1
+git branch feabranch2
+for i in dfile3 ; do  touch $i ; git add . ; git commit -m "added by devlop"; done
+
+git checkout feabranch2
+for i in newfea2.1 ; do  touch $i ; git add . ; git commit -m "added by feabranch2"; done
+
+git checkout feabranch1
+for i in newfea1.1 ; do  touch $i ; git add . ; git commit -m "added by feabranch1"; done
+for i in newfea1.2 ; do  touch $i ; git add . ; git commit -m "added by feabranch1"; done
+
+git checkout feabranch2
+for i in newfea2.2 ; do  touch $i ; git add . ; git commit -m "added by feabranch2"; done
+
+git checkout develop
+git checkout --orphan hotfixes
+git rm --cached *
+rm -rf *
+for i in hotfix ; do  touch $i ; git add . ; git commit -m "added by hotfixes" ; done
+
+git checkout develop
+git merge hotfixes
+
+git checkout master
+git merge hotfixes
+git tag 0.2
+
+git checkout develop
+git merge feabranch1
+
+git checkout develop
+git checkout -b reabranch
+for i in bugfix; do  touch $i ; git add . ; git commit -m "added by reabranch" ; done
+git merge --no-ff reabranch
+
+git checkout develop
+git merge reabranch
+
+git checkout feabranch2
+for i in newfea2.3; do  touch $i ; git add . ; git commit -m "added by feabranch2" ; done
+
+git checkout feabranch1
+git merge develop
+
+git checkout reabranch
+for i in bugfix1.1; do  touch $i ; git add . ; git commit -m "added by reabranch" ; done
+for i in bugfix1.2; do  touch $i ; git add . ; git commit -m "added by reabranch" ; done
+
+git checkout master
+git merge reabranch
+git tag 1.0
+
+git checkout develop
+git merge reabranch
+
+git checkout feabranch1
+for i in newfea1.3 ; do  touch $i ; git add . ; git commit -m "added by feabranch1"; done
+for i in newfea1.4 ; do  touch $i ; git add . ; git commit -m "added by feabranch1"; done
+
+git checkout develop
+git merge feabranch1
+
+git checkout feabranch2
+for i in newfea2.3; do  touch $i ; git add . ; git commit -m "added by feabranch2" ; done
+
+git checkout develop
+git merge feabranch2
+
+git checkout reabranch
+git merge develop
+
+git checkout master
+git merge reabranch
+
+------------------------------------------------------------------------------------------------------------------
+Aug 13, 2019
+------------------------------------------------------------------------------------------------------------------
+
+create a empty/orphan branch
+
+git checkout --orphan hotfixes 
+( git status ; git branch ; check default branch not selected and git log
+fatal: bad default revision 'HEAD')
+Switched to a new branch 'hotfixes'
+
+git rm --cached *
+git clean -fd . / rm -f *
+
+for i in bugfix ; do  touch $i ; git add . ; git commit -m "added $i"; done
+git log --oneline ; git branch
+
+
+git cherry-pick commitid -- to pick particular commit id from other branchers..
+git cherry-pick dev3
+git cherry-pick ..dev3
+
+git stash / git stash save "label"
+git stash list
+git stash show
+git stash pop
+git stash apply
+
+
+list only current branch:
+cat .git/HEAD
+git rev-parse --abbrev-ref HEAD
+
+create a file:
+for i in dfile5 ; do  touch $i ; git add . ; git commit -m "added $i"; done
+for i in dfile1 dfile2 dfile3 ; do  touch $i ; git add . ; git commit -m "added $i"; done
+
+------------------------------------------------------------------------------------------------------------------
+Aug 14, 2019
+------------------------------------------------------------------------------------------------------------------
+
+git - init, status, branch, add , commit (amend), merge (ff one commit one branch, 2 commits on different file d/f branch, 2 commits samefile d/f branch), checkout (orphan), cherry-pick, stash, push, clone, pull, tag, clean, origin, rebase
+
+
+------------------------------------------------------------------------------------------------------------------
+git tasks:
+------------------------------------------------------------------------------------------------------------------
+
+git installation - yum install git
+
+Git-status is used to understand what stage the files in a repository are at.
+git status - fatal: Not a git repository (or any of the parent directories): .git
+
+git init - Initialized empty Git repository in /root/soft/gittest/user5/.git/
+
+how will you configure your developers username and email
+
+how to list git configuration
+git config --list
+
+what are the 3 phases in git - working dir/staging area/local repo
+
+what is commit and how will you commit a file - The "commit" command is used to save your changes to the local repository.
+how will you check your commits - git log
+how will you commit tracked files to local repo with single command
+
+what is the purpose of git - The purpose of Git is to manage a project, or a set of files, as they change over time. Git stores this information in a data structure called a repository. A git repository contains, among other things, the following: A set of commit objects.
+
+clean your working dir
+
+copy file from local repo to staging/index area
+
+unstage file
+
+copy file from local repo directly to workspace
+
+how will you clone , push , pull
+
+while pushing you are getting rejected error?
+
+github repo... collabarative access, email notification on commits
+
+branch - create, list, change, rename, create and switch in one go,  merge fast-forward, merge conflicts, skip conflicts, delete local branch, delete remote branch, without merge delete, rebase, merge vs rebase, fetch 
+https://medium.com/@haydar_ai/learning-how-to-git-merging-branches-and-resolving-conflict-61652834d4b0
+https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase
+
+
+how to create cmd alias to git command , remove
+
+how to ignore files in git
+
+what is stash memory.. list, stash , unstash, pop, apply, drop, show
+
+what is tag .. list, create, delete, push
+
+
+------------------------------------------------------------------------------------------------------------------
+references:
+------------------------------------------------------------------------------------------------------------------
+
+https://nvie.com/posts/a-successful-git-branching-model/
+https://www.bogotobogo.com/DevOps/DevOps_CI_CD_Pipeline_Sample.php
+
+
+------------------------------------------------------------------------------------------------------------------
+Yet to Discuss:
+------------------------------------------------------------------------------------------------------------------
+
+You need to commit at least one time on master before creating a new branch.
+
+https://career.guru99.com/top-40-interview-questions-on-git/
+
+https://github.com/
+
+git help config
+       When reading, the values are read from the system, global and repository local configuration files by default, and options
+       --system, --global, --local and --file <filename> can be used to tell the command to read from only that location (see the
+       section called “FILES”).
+
+cat ~/.gitconfig
+cat .git/config
+git config --list
+
+~/.gitconfig --global
+.git/config --local
+/etc/gitconfig --system
+git config --list  --file /tmp/fileconfig
+
+
+git config --global --edit
+git config --local --edit
+git config --system --edit 
+git config --edit  --file /tmp/fileconfig	
+
+git config --global user.email "sivaprasad.kammara@gmail.com"
+git config --global user.name "ksphub"
+
+git config --global --unset-all  user.name
+git config --global --unset-all  user.email
+git config --global --replace-all user.email "you@example.com"
+git config --global --replace-all user.name "Your Name"
+
+[root@ip-172-31-32-89 ksp4]# git config --local --list
+
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+
+[root@ip-172-31-32-89 ksp4]# git config --global --list
+
+user.email=sivaprasad.kammara@gmail.com
+user.name=ksphub
+[root@ip-172-31-32-89 ksp4]# git config --system --list
+fatal: unable to read config file '/etc/gitconfig': No such file or directory
+
+[root@ip-172-31-32-89 ksp4]# git config --list
+
+user.email=sivaprasad.kammara@gmail.com
+user.name=ksphub
+core.repositoryformatversion=0
+core.filemode=true
+core.bare=false
+core.logallrefupdates=true
+
+[root@ip-172-31-32-89 ksp4]#
+
+git clone https://github.com/ksphub/centralrepo.git
+https://github.com/ksphub/centralrepo.git
+git push origin master
+
+git log --stat --summary
+git help tutorial
+git help add/status/config
+
+git remote -v
+git remote add origin https://github.com/ksphub/centralrepo.git
+git push -u origin master
+
+https://github.com/ksphub/KSPDocs.git
+
+git show-branch -a \
+| grep '\*' \
+| grep -v `git rev-parse --abbrev-ref HEAD` \
+| head -n1 \
+| sed 's/.*\[\(.*\)\].*/\1/' \
+| sed 's/[\^~].*//'
+
+git log --graph --decorate --simplify-by-decoration
+git log --decorate --graph --oneline
+
+
+------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------------------
+
+Aug 16,2019
+
+Maven:
+
+
+[root@ip-172-31-35-172 ~]# vi /etc/selinux/config
+[root@ip-172-31-35-172 ~]# getenforce
+Permissive
+[root@ip-172-31-35-172 ~]# setenforce 0
+[root@ip-172-31-35-172 ~]# getenforce
+Permissive
+
+
+yum install wget -y
+wget http://apachemirror.wuchna.com/maven/maven-3/3.6.1/binaries/apache-maven-3.6.1-bin.tar.gz
+
+tar -xvf apache-maven-3.6.1-bin.tar.gz
+cat apache-maven-3.6.1/README.txt
+
+wget https://download.oracle.com/otn/java/jdk/8u221-b11/230deb18db3e4014bb8e3e8324f81b43/jdk-8u221-linux-x64.tar.gz?AuthParam=1565921966_b8a83a28f88367687f28373c8cd337d8
+
+tar -xvf jdk-8u221-linux-x64.tar.gz?AuthParam=1565921966_b8a83a28f88367687f28373c8cd337d8
+
+mv jdk-8u221-linux-x64.tar.gz?AuthParam=1565921966_b8a83a28f88367687f28373c8cd337d8 jdk-8u221-linux-x64.tar.gz
+
+tar -xvf jdk-8u221-linux-x64.tar.gz
+
+[root@ip-172-31-35-172 bin]# pwd
+/root/soft/jdk1.8.0_221/bin
+
+[root@ip-172-31-35-172 soft]# ./jdk1.8.0_221/bin/java -version
+java version "1.8.0_221"
+Java(TM) SE Runtime Environment (build 1.8.0_221-b11)
+Java HotSpot(TM) 64-Bit Server VM (build 25.221-b11, mixed mode)
+
+
+[root@ip-172-31-35-172 bin]# java -version
+-bash: java: command not found
+
+[root@ip-172-31-35-172 bin]# ./java -version
+java version "1.8.0_221"
+Java(TM) SE Runtime Environment (build 1.8.0_221-b11)
+Java HotSpot(TM) 64-Bit Server VM (build 25.221-b11, mixed mode)
+[root@ip-172-31-35-172 bin]#
+
+[root@ip-172-31-35-172 soft]# export JAVA_HOME=/root/soft/jdk1.8.0_221
+
+[root@ip-172-31-35-172 soft]# echo $JAVA_HOME
+/root/soft/jdk1.8.0_221
+
+[root@ip-172-31-35-172 soft]# export PATH=$PATH:$JAVA_HOME/bin
+[root@ip-172-31-35-172 soft]# echo $PATH
+/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/root/soft/jdk1.8.0_221/bin
+[root@ip-172-31-35-172 soft]#
+
+
+which ls
+/bin/ls
+
+echo $PATH
+/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
+
+which ls
+whereis ls
+
+user home dir ; ll -a
+.bash_profile
+
+------------------------------------------------------------------------------------------------------------------
+Aug 16,2019
+------------------------------------------------------------------------------------------------------------------
+
+create repo in github 
+git push -u origin master
+git tag
+
+set session level environment variables
+set user level environment variables
+set system level environment variables
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------------------
+
