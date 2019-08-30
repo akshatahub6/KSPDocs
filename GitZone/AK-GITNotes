@@ -777,3 +777,219 @@ drwxr-xr-x. 4 root root   30 Aug 19 02:24 src
 
 ------------------------------------------------------------------------------------------------------------------
 
+------------------------------------------------------------------------------------------------------------------
+Aug 20, 2019
+------------------------------------------------------------------------------------------------------------------
+
+mvn archetype:generate
+maven-archetype-webapp (sample to create war file)
+
+Define value for property 'groupId': test.com
+Define value for property 'artifactId': projecttest
+Define value for property 'version' 1.0-SNAPSHOT: :
+Define value for property 'package' test.com: : testpackage.com
+Confirm properties configuration:
+groupId: test.com
+artifactId: projecttest
+version: 1.0-SNAPSHOT
+package: testpackage.com
+ Y: :
+
+artifactId - project name in this name dir create..
+
+mvn package
+projecttest.war
+
+Tomcat Server:
+
+search tomcat server
+https://tomcat.apache.org/download-80.cgi
+right click on *.tar.gz copy link location then use wget paste the link to donwload
+
+useradd tomcat
+wget http://mirrors.estointernet.in/apache/tomcat/tomcat-8/v8.5.43/bin/apache-tomcat-8.5.43.tar.gz
+tar -xvf apache-tomcat-8.5.43.tar.gz
+chown -R tomcat: apache-tomcat-8.5.43
+./apache-tomcat-8.5.43/bin/catalina.sh -h
+
+Usage: catalina.sh ( commands ... )
+commands:
+  debug             Start Catalina in a debugger
+  debug -security   Debug Catalina with a security manager
+  jpda start        Start Catalina under JPDA debugger
+  run               Start Catalina in the current window
+  run -security     Start in the current window with security manager
+  start             Start Catalina in a separate window
+  start -security   Start in a separate window with security manager
+  stop              Stop Catalina, waiting up to 5 seconds for the process to end
+  stop n            Stop Catalina, waiting up to n seconds for the process to end
+  stop -force       Stop Catalina, wait up to 5 seconds and then use kill -KILL if still running
+  stop n -force     Stop Catalina, wait up to n seconds and then use kill -KILL if still running
+  configtest        Run a basic syntax check on server.xml - check exit code for result
+  version           What version of tomcat are you running?
+
+./apache-tomcat-8.5.43/bin/catalina.sh version
+
+catalina.sh version
+-bash: catalina.sh: command not found
+
+echo $PATH
+/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/soft/jdk1.8.0_221/bin:java2:/root/bin:/opt/soft/jdk1.8.0_221/bin:/opt/soft/apache-maven-3.6.1/bin
+
+export PATH=$PATH:/opt/soft/apache-tomcat-8.5.43/bin
+
+echo $PATH
+/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/soft/jdk1.8.0_221/bin:java2:/root/bin:/opt/soft/jdk1.8.0_221/bin:/opt/soft/apache-maven-3.6.1/bin:/opt/soft/apache-tomcat-8.5.43/bin
+
+catalina.sh version
+
+catalina.sh start
+Using CATALINA_BASE:   /opt/soft/apache-tomcat-8.5.43
+Using CATALINA_HOME:   /opt/soft/apache-tomcat-8.5.43
+Using CATALINA_TMPDIR: /opt/soft/apache-tomcat-8.5.43/temp
+Using JRE_HOME:        /opt/soft/jdk1.8.0_221
+Using CLASSPATH:       /opt/soft/apache-tomcat-8.5.43/bin/bootstrap.jar:/opt/soft/apache-tomcat-8.5.43/bin/tomcat-juli.jar
+Tomcat started.
+
+http://ip:8080
+
+netstat -tulpn | grep 8080
+
+ps -ef | grep -i tomcat
+
+root     13947     1  4 02:31 pts/2    00:00:02 /opt/soft/jdk1.8.0_221/bin/java -Djava.util.logging.config.file=/opt/soft/apache-tomca -8.5.43/conf/logging.properties -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djdk.tls.ephemeralDHKeySize=2048 -Djava.protocol.handler.pkgs=org.apache.catalina.webresources -Dorg.apache.catalina.security.SecurityListener.UMASK=0027 -Dignore.endorsed.dirs= -classpath /opt/soft/apache-tomcat-8.5.43/bin/bootstrap.jar:/opt/soft/apache-tomcat-8.5.43/bin/tomcat-juli.jar -Dcatalina.base=/opt/soft/apache-tomcat-8.5.43 -Dcatalina.home=/opt/soft/apache-tomcat-8.5.43 -Djava.io.tmpdir=/opt/soft/apache-tomcat-8.5.43/temp org.apache.catalina.startup.Bootstrap start
+
+------------------------------------------------------------------------------------------------------------------
+Aug 21, 2019
+------------------------------------------------------------------------------------------------------------------
+
+tomcat server url:
+http://3.17.62.98:8080/
+click on manager app tab..
+
+
+1. conf/tomcat-users.xml -- go to end of the file and append below lines before </tomcat-users>
+
+<role rolename="manager-gui"/>
+<user username="tomcat" password="tomcat123" roles="manager-gui,manager-script"/>
+
+2. vi  webapps/manager/META-INF/context.xml -- comment below lines...
+
+<Context antiResourceLocking="false" privileged="true" >
+<!--
+  <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+         allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" />
+-->
+
+http://3.17.62.98:8080/manager/html
+
+cd /opt/soft/mvntask/Testartifact
+cp target/Testartifact-1.0-SNAPSHOT.jar /opt/soft/apache-tomcat-8.5.43/webapps/
+http://3.17.62.98:8080/Testartifact/
+
+catalina.sh stop
+catalina.sh start
+
+------------------------------------------------------------------------------------------------------------------
+Aug 22, 2019
+------------------------------------------------------------------------------------------------------------------
+
+
+https://tomcat.apache.org/tomcat-8.5-doc/appdev/sample/
+https://tomcat.apache.org/tomcat-9.0-doc/manager-howto.html
+
+mvn archetype:generate
+maven-archetype-webapp ####(sample to create war file)
+
+
+Choose a number or apply filter (format: [groupId:]artifactId, case sensitive contains): 1401: maven-archetype-webapp
+Choose archetype:
+1: remote -> com.haoxuer.maven.archetype:maven-archetype-webapp (a simple maven archetype)
+2: remote -> com.lodsve:lodsve-maven-archetype-webapp (Lodsve Maven Archetype Webapp)
+3: remote -> org.apache.maven.archetypes:maven-archetype-webapp (An archetype which contains a sample Maven Webapp project.)
+Choose a number or apply filter (format: [groupId:]artifactId, case sensitive contains): : 3
+Choose org.apache.maven.archetypes:maven-archetype-webapp version:
+1: 1.0-alpha-1
+2: 1.0-alpha-2
+3: 1.0-alpha-3
+4: 1.0-alpha-4
+5: 1.0
+6: 1.3
+7: 1.4
+Choose a number: 7:
+Define value for property 'groupId': AK.COM
+Define value for property 'artifactId': AKProject
+Define value for property 'version' 1.0-SNAPSHOT: :
+Define value for property 'package' AK.COM: : AKPackage
+Confirm properties configuration:
+groupId: AK.COM
+artifactId: AKProject
+version: 1.0-SNAPSHOT
+package: AKPackage
+ Y: :
+
+java -cp /opt/soft/mvntask/CNA/target/CNA-1.0-SNAPSHOT.jar IBMPPACKAGE.App
+Hello World!
+
+------------------------------------------------------------------------------------------------------------------
+Aug 27, 2019
+------------------------------------------------------------------------------------------------------------------
+
+Apache Installation
+Project Creation
+
+------------------------------------------------------------------------------------------------------------------
+Aug 28, 2019
+------------------------------------------------------------------------------------------------------------------
+
+Apache Installation
+Project Creation
+
+------------------------------------------------------------------------------------------------------------------
+Aug 29, 2019
+------------------------------------------------------------------------------------------------------------------
+
+Apache Installation
+Project Creation
+
+------------------------------------------------------------------------------------------------------------------
+Aug 30, 2019
+------------------------------------------------------------------------------------------------------------------
+
+Apache Installation
+Project Creation
+
+
+  796  git init
+  797  git status
+  798  pwd
+  799  mvn archetype:generate
+  800  ll
+  801  git status
+  802  cd TestProj/
+  803  ll
+  804  mvn package
+  805  git status
+  806  git add .
+  807  git status
+  808  git commit -m "Test Proj"
+  809  git status
+  810  git push https://github.com/ksphub/testrepo2.git master
+  811  git pull
+  812  git pull https://github.com/ksphub/testrepo2.git
+  813  git push https://github.com/ksphub/testrepo2.git master
+  814  wget https://github.com/ksphub/testrepo2/blob/master/TestProj/target/TestProj.war
+  815  ll
+  816  rm TestProj.war
+  817  ll
+  818  vi src/main/webapp/index.jsp
+  819  mvn package
+  820  git push https://github.com/ksphub/testrepo2.git master
+  821  git status
+  822  git commit -m "test2"
+  823  git add .
+  824  git commit -m "test2"
+  825  git push https://github.com/ksphub/testrepo2.git master
+  826  cat src/main/webapp/index.jsp
+  827  history
+
