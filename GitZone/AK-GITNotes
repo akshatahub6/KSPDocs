@@ -993,3 +993,85 @@ Project Creation
   826  cat src/main/webapp/index.jsp
   827  history
 
+-----------------------------------------------------------------------------------------------------------------
+Sep 01, 2019
+------------------------------------------------------------------------------------------------------------------
+
+git, maven, tomcat .. practise...
+
+jenkins...
+is a CI tool
+
+download jenkins
+https://pkg.jenkins.io/redhat-stable/
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+yum install jenkins
+
+port 8080
+tomcat 8080... change...
+
+./apache-tomcat-8.5.43/bin/catalina.sh stop
+vi apache-tomcat-8.5.43/conf/server.xml
+ <Connector port="8081" protocol="HTTP/1.1"
+
+./apache-tomcat-8.5.43/bin/catalina.sh start
+
+systemctl  status jenkins
+
+[root@ip-172-31-35-172 soft]# ln -s /opt/soft/jdk1.8.0_221/bin/java /usr/bin/java
+[root@ip-172-31-35-172 soft]# ll /usr/bin/java
+lrwxrwxrwx. 1 root root 31 Sep  1 03:38 /usr/bin/java -> /opt/soft/jdk1.8.0_221/bin/java
+[root@ip-172-31-35-172 soft]# /usr/bin/java -version
+java version "1.8.0_221"
+Java(TM) SE Runtime Environment (build 1.8.0_221-b11)
+Java HotSpot(TM) 64-Bit Server VM (build 25.221-b11, mixed mode)
+[root@ip-172-31-35-172 soft]#
+
+http://3.17.62.98:8080/login?from=%2F
+ksp123
+
+[root@ip-172-31-35-172 soft]# cat /var/lib/jenkins/secrets/initialAdminPassword
+475528102b9242c58fc67abc59fb7a41
+
+Plugins extend Jenkins with additional features to support many different needs. 
+
+[root@ip-172-31-35-172 ~]# cat /etc/sudoers.d/90-cloud-init-users
+# Created by cloud-init v. 18.2 on Fri, 16 Aug 2019 02:03:37 +0000
+
+# User rules for centos
+centos ALL=(ALL) NOPASSWD:ALL
+jenkins ALL=(ALL) NOPASSWD:ALL
+
+------------------------------------------------------------------------------------------------------------------
+Sep 02, 2019
+------------------------------------------------------------------------------------------------------------------
+
+Jenkins dashboard overview..
+sample git and maven setup...
+
+https://github.com/ksphub/centralrepo.git
+
+------------------------------------------------------------------------------------------------------------------
+Sep 03, 2019
+------------------------------------------------------------------------------------------------------------------
+
+
+mvn archetype:generate \
+	-DgroupId=com.companyname.automobile \
+	-DartifactId=trucks \
+	-DarchetypeArtifactId=maven-archetype-webapp \
+	-DinteractiveMode=false
+
+
+tomcat plugin - Deploy to container
+
+post-build actions > deploy war/ear to a container > war/ear files .. **/*.war > containers > tomcat 8.x > credentails of tomcatapp > qatomcaturl http://ip:8080
+
+
+http://3.17.62.98:8080/github-webhook/
+
+timestamp plugin - build timestamp
+yyyy-MM-dd HH:mm:ss z
+IST yyyy-MM-dd_HH:mm:ss_z
